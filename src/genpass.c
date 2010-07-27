@@ -1,4 +1,4 @@
-//by posixninja, geohot, and chronic
+//by posixninja, geohot, chronic & fallensn0w (added output log support)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,6 +73,17 @@ static uint64 ramdisk_size(const char* ramdisk) {
     return 0;
   }
   return (uint64) filestat.st_size;
+}
+
+void get_hex(uint8* hex, int size) {
+	int i = 0;
+	FILE *dump;
+	for (i = 0; i < size; i++) {
+		dump = fopen("vfdecrypt.txt","a+");
+		fprintf(dump,"%02x", hex[i]);
+		fclose(dump);
+	}
+	printf("\n");
 }
 
 void print_hex(uint8* hex, int size) {
@@ -236,6 +247,8 @@ int main(int argc, char* argv[]) {
     fprintf(stderr, "unable to decrypt vfdecrypt key\n");
     return -1;
   }
+
+  get_hex(key, 0x24);	/* save the key into vfdecrypt.txt */
   printf("vfdecrypt key: ");
   print_hex(key, 0x24);
 
